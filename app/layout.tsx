@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Urbanist } from 'next/font/google';
 import Nabvar from '@/components/navbar';
+import ModalProvider from '@/providers/modal-provider';
 
 const urbanis = Urbanist({ subsets: ['latin'] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({
    return (
       <html lang='en'>
          <body className={urbanis.className}>
+            <ModalProvider />
             <Nabvar />
             {children}
             <Footer />
