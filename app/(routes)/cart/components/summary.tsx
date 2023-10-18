@@ -5,12 +5,24 @@ import Currency from '@/components/ui/currency';
 import useCart from '@/hooks/use-cart';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 
 const Summary = () => {
    const { items, removeAll } = useCart();
    const searchParams = useSearchParams();
+   const [isMounted, setIsMounted] = useState(false);
+
+   useEffect(() => {
+      if (searchParams.get('success') && isMounted) {
+         toast.success('Payment completed.');
+         removeAll();
+      }
+      if (searchParams.get('canceled')) {
+         toast.error('Something went wrong.');
+      }
+      setIsMounted(true);
+   }, [searchParams, removeAll, isMounted]);
 
    const totalPrice = items.reduce((total, item) => {
       return total + Number(item.price);
@@ -26,16 +38,6 @@ const Summary = () => {
 
       window.location = response.data.url;
    };
-
-   useEffect(() => {
-      if (searchParams.get('success')) {
-         toast.success('Payment completed.');
-         removeAll();
-      }
-      if (searchParams.get('canceled')) {
-         toast.error('Something went wrong.');
-      }
-   }, [searchParams, removeAll]);
 
    return (
       <div className='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8'>

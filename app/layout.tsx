@@ -21,8 +21,8 @@ export default function RootLayout({
    return (
       <html lang='en'>
          <body className={urbanis.className}>
-            <ModalProvider />
             <ToastProvider />
+            <ModalProvider />
             <Nabvar />
             {children}
             <Footer />
